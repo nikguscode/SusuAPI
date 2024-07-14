@@ -1,0 +1,38 @@
+package com.nikguscode.SusuAPIs.model.repositories.variables;
+
+import static com.nikguscode.SusuAPIs.model.repositories.DBConstants.*;
+import com.nikguscode.SusuAPIs.model.repositories.DBQueries;
+import com.nikguscode.SusuAPIs.model.repositories.VariableMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class AuthenticationVariables extends DBQueries implements VariableMapper {
+    private final JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    public AuthenticationVariables(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    @Override
+    public Map<String, String> getVariables() {
+        Map<String, String> variables = new HashMap<>();
+
+        variables.put(CSRF_VAR, jdbcTemplate.queryForObject(
+                super.createSelectQuery(CSRF_DB, C_AUTH_TABLE), String.class));
+        variables.put(USERNAME_VAR, jdbcTemplate.queryForObject(
+                super.createSelectQuery(USERNAME_DB, C_AUTH_TABLE), String.class));
+        variables.put(PASSWORD_VAR, jdbcTemplate.queryForObject(
+                super.createSelectQuery(PASSWORD_DB, C_AUTH_TABLE), String.class));
+        variables.put(URL_VAR, jdbcTemplate.queryForObject(
+                super.createSelectQuery(URL_DB, C_AUTH_TABLE), String.class));
+
+        return variables;
+    }
+}
