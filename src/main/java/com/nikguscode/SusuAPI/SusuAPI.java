@@ -1,6 +1,6 @@
-package com.nikguscode.SusuAPIs;
+package com.nikguscode.SusuAPI;
 
-import com.nikguscode.SusuAPIs.model.repositories.variables.AuthenticationVariables;
+import com.nikguscode.SusuAPI.model.repositories.variables.AuthenticationVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

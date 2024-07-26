@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPIs.model.repositories;
+package com.nikguscode.SusuAPI.model.repositories;
 
 import org.springframework.stereotype.Service;
 

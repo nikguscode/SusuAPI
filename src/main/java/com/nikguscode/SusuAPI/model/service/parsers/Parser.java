@@ -1,6 +1,6 @@
-package com.nikguscode.SusuAPIs.model.service.parsers;
+package com.nikguscode.SusuAPI.model.service.parsers;
 
-import com.nikguscode.SusuAPIs.model.service.AuthenticationService;
+import com.nikguscode.SusuAPI.model.service.AuthenticationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

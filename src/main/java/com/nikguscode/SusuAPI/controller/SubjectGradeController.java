@@ -1,8 +1,8 @@
-package com.nikguscode.SusuAPIs.controller;
+package com.nikguscode.SusuAPI.controller;
 
-import com.nikguscode.SusuAPIs.model.entities.Student;
-import com.nikguscode.SusuAPIs.model.service.AuthenticationService;
-import com.nikguscode.SusuAPIs.model.service.parsers.ParserInterface;
+import com.nikguscode.SusuAPI.model.entities.Student;
+import com.nikguscode.SusuAPI.model.service.AuthenticationService;
+import com.nikguscode.SusuAPI.model.service.parsers.ParserInterface;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

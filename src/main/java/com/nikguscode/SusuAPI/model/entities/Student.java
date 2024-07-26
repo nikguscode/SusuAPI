@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPIs.model.entities;
+package com.nikguscode.SusuAPI.model.entities;
 
 import org.springframework.stereotype.Component;
 

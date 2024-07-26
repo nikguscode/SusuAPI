@@ -1,9 +1,9 @@
-package com.nikguscode.SusuAPIs.model.service;
+package com.nikguscode.SusuAPI.model.service;
 
-import com.nikguscode.SusuAPIs.model.entities.Student;
-import com.nikguscode.SusuAPIs.model.service.parsers.CsrfTokenExtractor;
-import com.nikguscode.SusuAPIs.model.service.parsers.Parser;
-import com.nikguscode.SusuAPIs.model.repositories.variables.AuthenticationVariables;
+import com.nikguscode.SusuAPI.model.entities.Student;
+import com.nikguscode.SusuAPI.model.service.parsers.CsrfTokenExtractor;
+import com.nikguscode.SusuAPI.model.service.parsers.Parser;
+import com.nikguscode.SusuAPI.model.repositories.variables.AuthenticationVariables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

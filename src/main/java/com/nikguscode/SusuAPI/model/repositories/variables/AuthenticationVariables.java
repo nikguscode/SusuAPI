@@ -1,8 +1,8 @@
-package com.nikguscode.SusuAPIs.model.repositories.variables;
+package com.nikguscode.SusuAPI.model.repositories.variables;
 
-import static com.nikguscode.SusuAPIs.model.repositories.DBConstants.*;
-import com.nikguscode.SusuAPIs.model.repositories.DBQueries;
-import com.nikguscode.SusuAPIs.model.repositories.VariableMapper;
+import static com.nikguscode.SusuAPI.model.repositories.DBConstants.*;
+import com.nikguscode.SusuAPI.model.repositories.DBQueries;
+import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

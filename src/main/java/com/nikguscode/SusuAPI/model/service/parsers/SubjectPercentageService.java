@@ -1,7 +1,7 @@
-package com.nikguscode.SusuAPIs.model.service.parsers;
+package com.nikguscode.SusuAPI.model.service.parsers;
 
-import static com.nikguscode.SusuAPIs.model.repositories.DBConstants.*;
-import com.nikguscode.SusuAPIs.model.repositories.VariableMapper;
+import static com.nikguscode.SusuAPI.model.repositories.DBConstants.*;
+import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPIs.model.service.parsers;
+package com.nikguscode.SusuAPI.model.service.parsers;
 
 import org.springframework.stereotype.Service;
 
