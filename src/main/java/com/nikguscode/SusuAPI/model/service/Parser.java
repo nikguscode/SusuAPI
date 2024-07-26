@@ -32,7 +32,7 @@ public class Parser {
             }
         }
 
-        throw new RuntimeException(matcher.find() ? "JSON creating error" : "No match found");
+        throw new RuntimeException(matcher.find() ? "JSON creating error" : "No match found. Response error");
     }
 
     protected String createBody(Map<String, String> bodyParameters) {
