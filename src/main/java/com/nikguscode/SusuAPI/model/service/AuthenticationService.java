@@ -2,7 +2,6 @@ package com.nikguscode.SusuAPI.model.service;
 
 import com.nikguscode.SusuAPI.model.entities.Student;
 import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
-import com.nikguscode.SusuAPI.model.service.parsers.CsrfTokenExtractor;
 import com.nikguscode.SusuAPI.model.service.requests.ConfiguratorInterface;
 import com.nikguscode.SusuAPI.model.service.requests.ExecutorInterface;
 import org.springframework.beans.factory.annotation.Autowired;

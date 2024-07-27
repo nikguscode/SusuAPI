@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.DX_CALLBACK_VAL;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.DX_CALLBACK_VAR;
 
 @Service
 public class Parser {
@@ -46,6 +50,13 @@ public class Parser {
 
     protected HttpRequest createGetRequest(String cookie, String link) {
         return executor.createGetRequest(cookie, link);
+    }
+
+    protected Map<String, String> setRequestFormParameters(Map<String, String> variables) {
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put(variables.get(DX_CALLBACK_VAR), variables.get(DX_CALLBACK_VAL));
+
+        return parameters;
     }
 
     protected String createJson(HttpResponse<String> response, String findPattern) {

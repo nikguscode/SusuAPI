@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.model.service.parsers;
+package com.nikguscode.SusuAPI.model.service;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

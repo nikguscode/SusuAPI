@@ -13,16 +13,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.FIND_PATTERN;
 
 @Service
-public class SubjectGradeParser extends Parser implements ParserInterface {
+public class StudyPlanParser extends Parser implements ParserInterface {
     private final VariableMapper mapper;
 
     @Autowired
-    public SubjectGradeParser(ConfiguratorInterface configurator,
-                              ExecutorInterface executor,
-                              @Qualifier("subjectGradeVariables") VariableMapper mapper) {
+    public StudyPlanParser(ConfiguratorInterface configurator,
+                           ExecutorInterface executor,
+                           @Qualifier("studyPlanVariables") VariableMapper mapper) {
         super(configurator, executor);
         this.mapper = mapper;
     }
