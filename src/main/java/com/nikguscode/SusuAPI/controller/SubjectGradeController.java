@@ -12,8 +12,8 @@ public class SubjectGradeController {
     private final AuthenticationService authService;
     private final ParserInterface parserInterface;
 
-    private SubjectGradeController(AuthenticationService authService,
-                                   @Qualifier("subjectGradeService") ParserInterface parserInterface) {
+    public SubjectGradeController(AuthenticationService authService,
+                                   @Qualifier("subjectGradeParser") ParserInterface parserInterface) {
         this.authService = authService;
         this.parserInterface = parserInterface;
     }
@@ -22,7 +22,6 @@ public class SubjectGradeController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String handle(@RequestBody Student student) {
         String cookie = authService.getCookies(student);
-
         return parserInterface.execute(cookie, "https://studlk.susu.ru/ru/Checkout/CheckoutPartialCustom");
     }
 }

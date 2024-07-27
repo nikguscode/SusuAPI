@@ -12,8 +12,6 @@
         <maven.compiler.release>21</maven.compiler.release>
     </properties>
 
-
-    <!-- Maven dependency for Jsoup -->
     <dependencies>
         <dependency>
             <groupId>org.jsoup</groupId>

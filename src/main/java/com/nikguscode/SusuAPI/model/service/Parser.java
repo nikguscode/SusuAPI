@@ -1,25 +1,51 @@
-package com.nikguscode.SusuAPI.model.service.parsers;
+package com.nikguscode.SusuAPI.model.service;
 
-import com.nikguscode.SusuAPI.model.service.AuthenticationService;
+import com.nikguscode.SusuAPI.model.service.requests.ConfiguratorInterface;
+import com.nikguscode.SusuAPI.model.service.requests.ExecutorInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.Duration;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Service
 public class Parser {
-    protected static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+    private final ConfiguratorInterface configurator;
+    private final ExecutorInterface executor;
+    protected final Logger logger;
+
+    @Autowired
+    public Parser (ConfiguratorInterface configurator,
+                   ExecutorInterface executor) {
+        this.configurator = configurator;
+        this.executor = executor;
+        this.logger = LoggerFactory.getLogger(getClass());
+    }
 
     protected HttpClient.Builder createClient() {
-        return HttpClient.newBuilder()
-                .followRedirects(HttpClient.Redirect.NORMAL)
-                .connectTimeout(Duration.ofSeconds(10));
+        return configurator.createClient();
+    }
+
+    protected String createBody(Map<String, String> bodyParameters) {
+        return configurator.createBody(bodyParameters);
+    }
+
+    protected HttpRequest createPostRequest(String body, String link) {
+        return executor.createPostRequest(body, link);
+    }
+
+    protected HttpRequest createPostRequest(String body, String cookie, String link) {
+        return executor.createPostRequest(body, cookie, link);
+    }
+
+    protected HttpRequest createGetRequest(String cookie, String link) {
+        return executor.createGetRequest(cookie, link);
     }
 
     protected String createJson(HttpResponse<String> response, String findPattern) {
@@ -33,39 +59,5 @@ public class Parser {
         }
 
         throw new RuntimeException(matcher.find() ? "JSON creating error" : "No match found. Response error");
-    }
-
-    protected String createBody(Map<String, String> bodyParameters) {
-        StringBuilder body = new StringBuilder();
-
-        for (Map.Entry<String, String> parameter : bodyParameters.entrySet()) {
-            body.append(parameter.getKey()).append("=");
-            body.append(parameter.getValue()).append("&");
-        }
-
-        return body.substring(0, body.length() - 1);
-    }
-
-    private HttpRequest.Builder createRequest(String link) {
-        return HttpRequest.newBuilder()
-                .uri(URI.create(link))
-                .header("Content-Type", "application/x-www-form-urlencoded");
-    }
-
-    protected HttpRequest createPostRequest(String body, String link) {
-        return createRequest(link)
-                .POST(HttpRequest.BodyPublishers.ofString(body)).build();
-    }
-
-    protected HttpRequest createPostRequest(String body, String cookie, String link) {
-        return createRequest(link)
-                .header("Cookie", cookie)
-                .POST(HttpRequest.BodyPublishers.ofString(body)).build();
-    }
-
-    protected HttpRequest createGetRequest(String cookie, String link) {
-        return createRequest(link)
-                .header("Cookie", cookie)
-                .GET().build();
     }
 }

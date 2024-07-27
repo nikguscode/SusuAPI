@@ -1,11 +1,12 @@
 package com.nikguscode.SusuAPI.model.service;
 
 import com.nikguscode.SusuAPI.model.entities.Student;
+import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 import com.nikguscode.SusuAPI.model.service.parsers.CsrfTokenExtractor;
-import com.nikguscode.SusuAPI.model.service.parsers.Parser;
-import com.nikguscode.SusuAPI.model.repositories.variables.AuthenticationVariables;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.nikguscode.SusuAPI.model.service.requests.ConfiguratorInterface;
+import com.nikguscode.SusuAPI.model.service.requests.ExecutorInterface;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -22,15 +23,18 @@ import java.util.Map;
 @Service
 @RequestScope
 public class AuthenticationService extends Parser {
-    private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
     private final CsrfTokenExtractor extractor;
-    private final AuthenticationVariables authenticationVariables;
+    private final VariableMapper mapper;
     private CookieManager userCookie;
 
-    public AuthenticationService(CsrfTokenExtractor extractor,
-                                 AuthenticationVariables authenticationVariables) {
+    @Autowired
+    public AuthenticationService(ConfiguratorInterface configurator,
+                                 ExecutorInterface executor,
+                                 CsrfTokenExtractor extractor,
+                                 @Qualifier("authenticationVariables") VariableMapper mapper) {
+        super(configurator, executor);
         this.extractor = extractor;
-        this.authenticationVariables = authenticationVariables;
+        this.mapper = mapper;
     }
 
     @Override
@@ -49,8 +53,8 @@ public class AuthenticationService extends Parser {
     }
 
     private List<HttpCookie> authorize(Student student) {
-        try (HttpClient client = createClient().build()){
-            Map<String, String> variables = authenticationVariables.getVariables();
+        try (HttpClient client = createClient().build()) {
+            Map<String, String> variables = mapper.getVariables();
             String body = super.createBody(setParameters(student, variables, client));
             HttpRequest request = super.createPostRequest(body, variables.get("urlVariable"));
 

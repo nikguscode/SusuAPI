@@ -10,29 +10,27 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.nikguscode.SusuAPI.model.repositories.DBConstants.FIND_PATTERN;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
 
 @Service
-public class SubjectGradeService extends Parser implements ParserInterface {
+public class SubjectGradeParser extends Parser implements ParserInterface {
     private final VariableMapper mapper;
 
     @Autowired
-    public SubjectGradeService(ConfiguratorInterface configurator,
-                               ExecutorInterface executor,
-                               @Qualifier("subjectGradeVariables") VariableMapper mapper) {
+    public SubjectGradeParser(ConfiguratorInterface configurator,
+                              ExecutorInterface executor,
+                              @Qualifier("subjectGradeVariables") VariableMapper mapper) {
         super(configurator, executor);
         this.mapper = mapper;
     }
 
-    private Map<String, String> setParameters() {
+    private Map<String, String> setParameters(Map<String, String> variables) {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put("DXCallbackName", "gvCheckout");
-        parameters.put("__DXCallbackArgument", "c0:KV|2;[];CT|2;{};GB|19;14|CUSTOMCALLBACK0|;");
+        parameters.put(variables.get(DX_CALLBACK_VAR), variables.get(DX_CALLBACK_VAL));
 
         return parameters;
     }
@@ -40,12 +38,12 @@ public class SubjectGradeService extends Parser implements ParserInterface {
     @Override
     public String execute(String cookie, String link) {
         try (HttpClient client = super.createClient().build()) {
-            String body = super.createBody(setParameters());
-            HttpRequest request = super.createPostRequest(body, cookie, link);
+            HttpResponse<String> response = client.send(
+                    super.createPostRequest(super.createBody(setParameters(mapper.getVariables())), cookie, link),
+                    HttpResponse.BodyHandlers.ofString()
+            );
 
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info("Response code: {}", response.statusCode());
-
             return super.createJson(response, mapper.getVariables().get(FIND_PATTERN));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

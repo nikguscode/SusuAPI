@@ -13,7 +13,7 @@ public class SubjectPercentageController {
     private final ParserInterface parserInterface;
 
     public SubjectPercentageController(AuthenticationService authService,
-                                       @Qualifier("subjectPercentageService") ParserInterface parserInterface) {
+                                       @Qualifier("subjectPercentageParser") ParserInterface parserInterface) {
         this.authService = authService;
         this.parserInterface = parserInterface;
     }
@@ -22,7 +22,6 @@ public class SubjectPercentageController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String handle(@RequestBody Student student) {
         String cookie = authService.getCookies(student);
-
         return parserInterface.execute(cookie, "https://studlk.susu.ru/ru/Checkout/RatingDetail");
     }
 }

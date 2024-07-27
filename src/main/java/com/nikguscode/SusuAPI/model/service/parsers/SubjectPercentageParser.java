@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.model.service.parsers;
 
-import static com.nikguscode.SusuAPI.model.repositories.DBConstants.FIND_PATTERN;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.FIND_PATTERN;
 
 import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 import com.nikguscode.SusuAPI.model.service.Parser;
@@ -11,16 +11,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Service
-public class SubjectPercentageService extends Parser implements ParserInterface {
+public class SubjectPercentageParser extends Parser implements ParserInterface {
     private final VariableMapper mapper;
 
-    private SubjectPercentageService(ConfiguratorInterface configurator,
-                                     ExecutorInterface executor,
-                                     @Qualifier("subjectPercentageVariables") VariableMapper mapper) {
+    private SubjectPercentageParser(ConfiguratorInterface configurator,
+                                    ExecutorInterface executor,
+                                    @Qualifier("subjectPercentageVariables") VariableMapper mapper) {
         super(configurator, executor);
         this.mapper = mapper;
     }
@@ -28,11 +27,12 @@ public class SubjectPercentageService extends Parser implements ParserInterface 
     @Override
     public String execute(String cookie, String link) {
         try (HttpClient client = super.createClient().build()) {
-            HttpRequest request = super.createGetRequest(cookie, link);
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(
+                    super.createGetRequest(cookie, link),
+                    HttpResponse.BodyHandlers.ofString()
+            );
 
             logger.info("Response code: {}", response.statusCode());
-
             return super.createJson(response, mapper.getVariables().get(FIND_PATTERN));
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);

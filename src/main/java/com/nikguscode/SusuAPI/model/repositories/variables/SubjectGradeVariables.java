@@ -28,7 +28,10 @@ public class SubjectGradeVariables extends DBVariablesQueries implements Variabl
                 super.createSelectQuery(URL_DB, C_GRADE_TABLE), String.class));
         variables.put(FIND_PATTERN, jdbcTemplate.queryForObject(
                 super.createSelectQuery(FIND_PATTERN_DB, C_GRADE_TABLE), String.class));
-        variables.put()
+        variables.put(DX_CALLBACK_VAR, jdbcTemplate.queryForObject(
+                super.createSelectQuery(DX_CALLBACK_DB, C_GRADE_TABLE), String.class));
+        variables.put(DX_CALLBACK_VAL, jdbcTemplate.queryForObject(
+                super.createSelectQuery(DX_CALLBACK_VALUE_DB, C_GRADE_TABLE), String.class));
 
         return variables;
     }
