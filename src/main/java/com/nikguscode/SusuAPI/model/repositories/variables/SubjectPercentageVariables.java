@@ -1,19 +1,18 @@
 package com.nikguscode.SusuAPI.model.repositories.variables;
 
-import static com.nikguscode.SusuAPI.model.repositories.DBConstants.*;
-import com.nikguscode.SusuAPI.model.repositories.DBQueries;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
+import com.nikguscode.SusuAPI.model.repositories.DBVariablesQueries;
 import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class SubjectPercentageVariables extends DBQueries implements VariableMapper {
+public class SubjectPercentageVariables extends DBVariablesQueries implements VariableMapper {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired

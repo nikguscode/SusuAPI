@@ -1,7 +1,7 @@
 package com.nikguscode.SusuAPI.model.repositories.variables;
 
-import static com.nikguscode.SusuAPI.model.repositories.DBConstants.*;
-import com.nikguscode.SusuAPI.model.repositories.DBQueries;
+import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
+import com.nikguscode.SusuAPI.model.repositories.DBVariablesQueries;
 import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class AuthenticationVariables extends DBQueries implements VariableMapper {
+public class AuthenticationVariables extends DBVariablesQueries implements VariableMapper {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
