@@ -25,13 +25,13 @@ public class AuthenticationVariables extends DBVariablesQueries implements Varia
         Map<String, String> variables = new HashMap<>();
 
         variables.put(CSRF_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(CSRF_DB, C_AUTH_TABLE), String.class));
+                super.executeSelectQuery(CSRF_DB, AUTH_TABLE), String.class));
         variables.put(USERNAME_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(USERNAME_DB, C_AUTH_TABLE), String.class));
+                super.executeSelectQuery(USERNAME_DB, AUTH_TABLE), String.class));
         variables.put(PASSWORD_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(PASSWORD_DB, C_AUTH_TABLE), String.class));
+                super.executeSelectQuery(PASSWORD_DB, AUTH_TABLE), String.class));
         variables.put(URL_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(URL_DB, C_AUTH_TABLE), String.class));
+                super.executeSelectQuery(URL_DB, AUTH_TABLE), String.class));
 
         return variables;
     }

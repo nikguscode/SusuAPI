@@ -17,6 +17,7 @@ public class SubjectGradeVariables extends DBVariablesQueries implements Variabl
 
     @Autowired
     public SubjectGradeVariables(JdbcTemplate jdbcTemplate) {
+        super(SUBJECT_GRADE_ROW);
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -25,13 +26,13 @@ public class SubjectGradeVariables extends DBVariablesQueries implements Variabl
         Map<String, String> variables = new HashMap<>();
 
         variables.put(URL_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(URL_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(URL_DB), String.class));
         variables.put(FIND_PATTERN, jdbcTemplate.queryForObject(
-                super.createSelectQuery(FIND_PATTERN_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(FIND_PATTERN_DB), String.class));
         variables.put(DX_CALLBACK_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(DX_CALLBACK_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(DX_CALLBACK_DB), String.class));
         variables.put(DX_CALLBACK_VAL, jdbcTemplate.queryForObject(
-                super.createSelectQuery(DX_CALLBACK_VALUE_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(DX_CALLBACK_VALUE_DB), String.class));
 
         return variables;
     }

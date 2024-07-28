@@ -17,6 +17,7 @@ public class SubjectPercentageVariables extends DBVariablesQueries implements Va
 
     @Autowired
     public SubjectPercentageVariables(JdbcTemplate jdbcTemplate) {
+        super(SUBJECT_PERCENTAGE_ROW);
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -25,9 +26,9 @@ public class SubjectPercentageVariables extends DBVariablesQueries implements Va
         Map<String, String> variables = new HashMap<>();
 
         variables.put(URL_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(URL_DB, C_PERCENTAGE_TABLE), String.class));
+                super.executeSelectQuery(URL_DB), String.class));
         variables.put(FIND_PATTERN, jdbcTemplate.queryForObject(
-                super.createSelectQuery(FIND_PATTERN_DB, C_PERCENTAGE_TABLE), String.class));
+                super.executeSelectQuery(FIND_PATTERN_DB), String.class));
 
         return variables;
     }

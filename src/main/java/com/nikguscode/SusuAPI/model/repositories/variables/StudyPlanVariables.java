@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
-import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.C_GRADE_TABLE;
 
 @Service
 public class StudyPlanVariables extends DBVariablesQueries implements VariableMapper {
@@ -18,6 +17,7 @@ public class StudyPlanVariables extends DBVariablesQueries implements VariableMa
 
     @Autowired
     public StudyPlanVariables(JdbcTemplate jdbcTemplate) {
+        super(STUDY_PLAN_ROW);
         this.jdbcTemplate = jdbcTemplate;
     }
 
@@ -26,13 +26,13 @@ public class StudyPlanVariables extends DBVariablesQueries implements VariableMa
         Map<String, String> variables = new HashMap<>();
 
         variables.put(URL_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(URL_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(URL_DB), String.class));
         variables.put(FIND_PATTERN, jdbcTemplate.queryForObject(
-                super.createSelectQuery(FIND_PATTERN_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(FIND_PATTERN_DB), String.class));
         variables.put(DX_CALLBACK_VAR, jdbcTemplate.queryForObject(
-                super.createSelectQuery(DX_CALLBACK_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(DX_CALLBACK_DB), String.class));
         variables.put(DX_CALLBACK_VAL, jdbcTemplate.queryForObject(
-                super.createSelectQuery(DX_CALLBACK_VALUE_DB, C_GRADE_TABLE), String.class));
+                super.executeSelectQuery(DX_CALLBACK_VALUE_DB), String.class));
 
         return variables;
     }

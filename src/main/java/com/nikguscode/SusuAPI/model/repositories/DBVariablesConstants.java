@@ -11,8 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBVariablesConstants {
     /**
-     * Variables which contains names of keys for every table column. A single key is sufficient for each column, since
-     * a single column can only contain one value
+     * Variables which contains names of keys for every table column
      */
     public static final String CSRF_VAR = "csrfVariable";
     public static final String URL_VAR = "urlVariable";
@@ -25,9 +24,16 @@ public class DBVariablesConstants {
     /**
      * Variables which contains names of table
      */
-    public static final String C_AUTH_TABLE = "config.auth";
-    public static final String C_GRADE_TABLE = "config.subject_grade";
-    public static final String C_PERCENTAGE_TABLE = "config.subject_percentage";
+    public static final String AUTH_TABLE = "config.auth";
+    public static final String VARIABLES_TABLE = "config.parser";
+
+    /**
+     * Variables which contains id of each parser
+     */
+    public static final String SUBJECT_WORK_PROGRAM_ROW = "subject_work_program";
+    public static final String SUBJECT_PERCENTAGE_ROW = "subject_percentage";
+    public static final String SUBJECT_GRADE_ROW = "subject_grade";
+    public static final String STUDY_PLAN_ROW = "study_plan";
 
     /**
      * Variables which contains names of table columns
