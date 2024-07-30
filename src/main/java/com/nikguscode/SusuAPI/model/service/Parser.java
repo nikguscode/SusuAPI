@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -14,9 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.DX_CALLBACK_VAL;
-import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.DX_CALLBACK_VAR;
 
 @Service
 public class Parser {
@@ -54,7 +52,7 @@ public class Parser {
 
     protected Map<String, String> setRequestFormParameters(Map<String, String> variables) {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(variables.get(DX_CALLBACK_VAR), variables.get(DX_CALLBACK_VAL));
+        parameters.put(variables.get(DX_CALLBACK_DB), variables.get(DX_CALLBACK_VALUE_DB));
 
         return parameters;
     }
