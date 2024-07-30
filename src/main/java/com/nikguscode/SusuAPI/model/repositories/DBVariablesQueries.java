@@ -1,39 +1,36 @@
 package com.nikguscode.SusuAPI.model.repositories;
 
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 import static com.nikguscode.SusuAPI.model.repositories.DBVariablesConstants.*;
 
 @Service
 public class DBVariablesQueries {
-    private String currentVariableStrategy;
+    private final JdbcTemplate jdbcTemplate;
+    private final String authenticationSelectQuery =
+            "SELECT * FROM " + AUTH_TABLE + " WHERE id = ?";
+    private final String parserSelectQuery =
+            "SELECT * FROM " + VARIABLES_TABLE + " WHERE id = ?";
 
-    public DBVariablesQueries() {
+    public DBVariablesQueries(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
-    public DBVariablesQueries(String currentVariableStrategy) {
-        this.currentVariableStrategy = currentVariableStrategy;
+    protected Map<String, String> executeSelectQuery(String parserId) {
+        Map<String, Object> query = jdbcTemplate.queryForMap(parserSelectQuery, parserId);
+        Map<String, String> variables = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : query.entrySet()) {
+            variables.put(entry.getKey(), String.valueOf(entry.getValue()));
+        }
+
+        return variables;
     }
 
-    protected StringBuilder createSelectQuery(String table, String dbName) {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("SELECT ").append(table);
-        queryBuilder.append(" FROM ").append(dbName);
-
-        return queryBuilder;
-    }
-
-    protected String executeSelectQuery(String table) {
-        System.out.println(createSelectQuery(table, VARIABLES_TABLE)
-                .append(" WHERE id = ")
-                .append(currentVariableStrategy)
-                .toString());
-        return createSelectQuery(table, VARIABLES_TABLE)
-                .append(" WHERE id = ")
-                .append(currentVariableStrategy)
-                .toString();
-    }
-
-    protected String executeSelectQuery(String table, String dbName) {
-        return createSelectQuery(table, dbName).toString();
+    protected Map<String, Object> executeSelectQuery() {
+        return jdbcTemplate.queryForMap(authenticationSelectQuery, 1);
     }
 }
