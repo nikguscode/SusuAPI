@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
  * @since 27/07/2024
  */
 @Configuration
-public class DBVariablesConstants {
+public class SelectConstants {
     /**
      * Variables which contains names of table
      */
