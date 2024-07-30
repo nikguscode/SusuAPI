@@ -11,17 +11,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DBVariablesConstants {
     /**
-     * Variables which contains names of keys for every table column
-     */
-    public static final String CSRF_VAR = "csrfVariable";
-    public static final String URL_VAR = "urlVariable";
-    public static final String USERNAME_VAR = "userNameVariable";
-    public static final String PASSWORD_VAR = "passwordVariable";
-    public static final String FIND_PATTERN = "findPattern";
-    public static final String DX_CALLBACK_VAR = "dxCallback";
-    public static final String DX_CALLBACK_VAL = "dxCallbackValue";
-
-    /**
      * Variables which contains names of table
      */
     public static final String AUTH_TABLE = "config.auth";
@@ -36,7 +25,7 @@ public class DBVariablesConstants {
     public static final String STUDY_PLAN_ROW = "study_plan";
 
     /**
-     * Variables which contains names of table columns
+     * Variables which contains names of table columns, also these values are keys
      */
     public static final String CSRF_DB = "csrf_var";
     public static final String USERNAME_DB = "username_var";
