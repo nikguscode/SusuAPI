@@ -1,14 +1,14 @@
 package com.nikguscode.SusuAPI.model.service;
 
 import com.nikguscode.SusuAPI.model.entities.Student;
-import com.nikguscode.SusuAPI.model.repositories.VariableMapper;
+import com.nikguscode.SusuAPI.model.repositories.AuthenticationVariablesManager;
 import com.nikguscode.SusuAPI.model.service.requests.ConfiguratorInterface;
 import com.nikguscode.SusuAPI.model.service.requests.ExecutorInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
+import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
 import java.io.IOException;
 import java.net.CookieManager;
 import java.net.HttpCookie;
@@ -23,17 +23,17 @@ import java.util.Map;
 @RequestScope
 public class AuthenticationService extends Parser {
     private final CsrfTokenExtractor extractor;
-    private final VariableMapper mapper;
+    private final AuthenticationVariablesManager variables;
     private CookieManager userCookie;
 
     @Autowired
     public AuthenticationService(ConfiguratorInterface configurator,
                                  ExecutorInterface executor,
                                  CsrfTokenExtractor extractor,
-                                 @Qualifier("authenticationVariables") VariableMapper mapper) {
+                                 AuthenticationVariablesManager variables) {
         super(configurator, executor);
         this.extractor = extractor;
-        this.mapper = mapper;
+        this.variables = variables;
     }
 
     @Override
@@ -44,18 +44,18 @@ public class AuthenticationService extends Parser {
 
     private Map<String, String> setParameters(Student student, Map<String, String> variablesName, HttpClient client) {
         Map<String, String> body = new HashMap<>();
-        body.put(variablesName.get("userNameVariable"), student.getUsername());
-        body.put(variablesName.get("passwordVariable"), student.getPassword());
-        body.put(variablesName.get("csrfVariable"), extractor.getCsrfToken(client));
+        body.put(variablesName.get(USERNAME_DB), student.getUsername());
+        body.put(variablesName.get(PASSWORD_DB), student.getPassword());
+        body.put(variablesName.get(CSRF_DB), extractor.getCsrfToken(client));
 
         return body;
     }
 
     private List<HttpCookie> authorize(Student student) {
         try (HttpClient client = createClient().build()) {
-            Map<String, String> variables = mapper.getVariables();
+            Map<String, String> variables = this.variables.getVariables();
             String body = super.createBody(setParameters(student, variables, client));
-            HttpRequest request = super.createPostRequest(body, variables.get("urlVariable"));
+            HttpRequest request = super.createPostRequest(body, variables.get(URL_DB));
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info("Response code: {}", response.statusCode());
