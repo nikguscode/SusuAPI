@@ -1,8 +1,5 @@
 package com.nikguscode.SusuAPI.model.entities;
 
-import org.springframework.stereotype.Component;
-
-@Component
 public class Student {
     private String username;
     private String password;

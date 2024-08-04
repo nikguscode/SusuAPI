@@ -12,19 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StudyPlanController {
-    private final AuthenticationService authService;
+    private final AuthenticationService authenticationService;
     private final ParserInterface parserInterface;
 
-    public StudyPlanController(AuthenticationService authService,
+    public StudyPlanController(AuthenticationService authenticationService,
                                        @Qualifier("studyPlanParser") ParserInterface parserInterface) {
-        this.authService = authService;
+        this.authenticationService = authenticationService;
         this.parserInterface = parserInterface;
     }
 
     @PostMapping("/study-plan")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String handle(@RequestBody Student student) {
-        String cookie = authService.getCookies(student);
+        String cookie = authenticationService.getCookies(student);
         return parserInterface.execute(cookie, "https://studlk.susu.ru/ru/StudyPlan/StudyPlanGridPartialCustom");
     }
 

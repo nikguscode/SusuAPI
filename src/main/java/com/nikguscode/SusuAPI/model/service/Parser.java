@@ -50,6 +50,13 @@ public class Parser {
         return executor.createGetRequest(cookie, link);
     }
 
+    protected String extractByMatcher(String dataForExtract, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(dataForExtract);
+
+        return matcher.group();
+    }
+
     protected Map<String, String> setRequestFormParameters(Map<String, String> variables) {
         Map<String, String> parameters = new HashMap<>();
         parameters.put(variables.get(DX_CALLBACK_DB), variables.get(DX_CALLBACK_VALUE_DB));

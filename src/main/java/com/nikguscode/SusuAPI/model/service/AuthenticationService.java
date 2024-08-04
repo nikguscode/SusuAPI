@@ -44,10 +44,12 @@ public class AuthenticationService extends Parser {
 
     private Map<String, String> setParameters(Student student, Map<String, String> variablesName, HttpClient client) {
         Map<String, String> body = new HashMap<>();
+
         body.put(variablesName.get(USERNAME_DB), student.getUsername());
         body.put(variablesName.get(PASSWORD_DB), student.getPassword());
         body.put(variablesName.get(CSRF_DB), extractor.getCsrfToken(client));
 
+        NullChecker.checkNotNull(body);
         return body;
     }
 
