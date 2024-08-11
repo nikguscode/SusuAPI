@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.controller;
 
-import com.nikguscode.SusuAPI.model.entities.Student;
+import com.nikguscode.SusuAPI.dto.StudentDto;
 import com.nikguscode.SusuAPI.model.service.AuthenticationService;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -18,7 +18,7 @@ public class AuthenticationController {
 
     @PostMapping("/authentication")
     @ResponseStatus(HttpStatus.CREATED)
-    public String handle(@RequestBody Student student) {
-        return authenticationService.getCookies(student);
+    public String handle(@RequestBody StudentDto studentDto) {
+        return authenticationService.getCookies(studentDto);
     }
 }

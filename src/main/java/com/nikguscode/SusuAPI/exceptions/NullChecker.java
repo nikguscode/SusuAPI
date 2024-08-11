@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.model.service;
+package com.nikguscode.SusuAPI.exceptions;
 
 import org.springframework.stereotype.Service;
 

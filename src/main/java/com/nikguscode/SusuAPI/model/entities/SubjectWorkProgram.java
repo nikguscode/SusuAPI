@@ -1,60 +1,35 @@
 package com.nikguscode.SusuAPI.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class SubjectWorkProgram {
-    private final String id;
-    private final String subjectName;
-    private final int semester;
-    private final String controlType;
-    private final String controlEventName;
-    private final double ratingWeight;
-    private final double maximumScore;
-    private final String academicPointsCriteria;
-    private final String assessmentType;
+    @JsonProperty("subject-site-id")
+    private String subjectSiteId;
 
-    public SubjectWorkProgram(String id, String subjectName, int semester, String controlType, String controlEventName,
-                              double ratingWeight, double maximumScore, String academicPointsCriteria, String assessmentType) {
-        this.id = id;
-        this.subjectName = subjectName;
-        this.semester = semester;
-        this.controlType = controlType;
-        this.controlEventName = controlEventName;
-        this.ratingWeight = ratingWeight;
-        this.maximumScore = maximumScore;
-        this.academicPointsCriteria = academicPointsCriteria;
-        this.assessmentType = assessmentType;
-    }
+    @JsonProperty("semester")
+    private int semester;
 
-    public String getId() {
-        return id;
-    }
+    @JsonProperty("control-type")
+    private String controlType;
 
-    public String getSubjectName() { return subjectName; }
+    @JsonProperty("control-event-name")
+    private String controlEventName;
 
-    public int getSemester() {
-        return semester;
-    }
+    @JsonProperty("rating-weight")
+    private double ratingWeight;
 
-    public String getControlType() {
-        return controlType;
-    }
+    @JsonProperty("maximum-score")
+    private double maximumScore;
 
-    public String getControlEventName() {
-        return controlEventName;
-    }
+    @JsonProperty("academic-points-criteria")
+    private String academicPointsCriteria;
 
-    public double getRatingWeight() {
-        return ratingWeight;
-    }
-
-    public double getMaximumScore() {
-        return maximumScore;
-    }
-
-    public String getAcademicPointsCriteria() {
-        return academicPointsCriteria;
-    }
-
-    public String getAssessmentType() {
-        return assessmentType;
-    }
+    @JsonProperty("assessment-type")
+    private String assessmentType;
 }

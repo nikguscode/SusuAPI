@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
-import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
 
 @Service
 public class SelectQueriesManager {

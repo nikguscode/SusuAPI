@@ -5,7 +5,7 @@ import com.nikguscode.SusuAPI.model.service.Parser;
 import com.nikguscode.SusuAPI.model.service.requests.ConfiguratorInterface;
 import com.nikguscode.SusuAPI.model.service.requests.ExecutorInterface;
 import org.springframework.stereotype.Service;
-import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
 
 import java.io.IOException;
 import java.net.http.HttpClient;

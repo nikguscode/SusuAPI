@@ -13,7 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
 
 @Service
 public class SubjectGradeParser extends Parser implements ParserInterface {

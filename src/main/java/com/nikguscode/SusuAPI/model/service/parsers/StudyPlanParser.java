@@ -13,18 +13,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Map;
 
-import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
 
 @Service
 public class StudyPlanParser extends Parser implements ParserInterface {
     private final SelectQueriesManager selectQueriesManager;
+    private final UserInfoParser userInfoParser;
 
     @Autowired
     public StudyPlanParser(ConfiguratorInterface configurator,
                            ExecutorInterface executor,
-                           SelectQueriesManager selectQueriesManager) {
+                           SelectQueriesManager selectQueriesManager,
+                           UserInfoParser userInfoParser) {
         super(configurator, executor);
         this.selectQueriesManager = selectQueriesManager;
+        this.userInfoParser = userInfoParser;
     }
 
     @Override

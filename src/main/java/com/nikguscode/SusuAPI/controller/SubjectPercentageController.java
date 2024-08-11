@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.controller;
 
-import com.nikguscode.SusuAPI.model.entities.Student;
+import com.nikguscode.SusuAPI.dto.StudentDto;
 import com.nikguscode.SusuAPI.model.service.AuthenticationService;
 import com.nikguscode.SusuAPI.model.service.parsers.ParserInterface;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -20,8 +20,8 @@ public class SubjectPercentageController {
 
     @PostMapping("/percentage")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public String handle(@RequestBody Student student) {
-        String cookie = authenticationService.getCookies(student);
+    public String handle(@RequestBody StudentDto studentDto) {
+        String cookie = authenticationService.getCookies(studentDto);
         return parserInterface.execute(cookie, "https://studlk.susu.ru/ru/Checkout/RatingDetail");
     }
 }

@@ -6,7 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import static com.nikguscode.SusuAPI.model.repositories.SelectConstants.*;
+
+import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -23,8 +24,8 @@ public class Parser {
     protected final Logger logger;
 
     @Autowired
-    public Parser (ConfiguratorInterface configurator,
-                   ExecutorInterface executor) {
+    public Parser(ConfiguratorInterface configurator,
+                  ExecutorInterface executor) {
         this.configurator = configurator;
         this.executor = executor;
         this.logger = LoggerFactory.getLogger(getClass());
@@ -50,11 +51,17 @@ public class Parser {
         return executor.createGetRequest(cookie, link);
     }
 
-    protected String extractByMatcher(String dataForExtract, String regex) {
+    protected String extractByMatcher(String dataForExtract, String regex, String callingClass) {
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(dataForExtract);
 
-        return matcher.group();
+        if (matcher.find()) {
+            logger.debug("Matcher: {} for {} class. \nBody: {}", matcher.group().trim(), callingClass, dataForExtract);
+            return matcher.group().trim();
+        } else {
+            logger.warn("Matcher not found for {} class.", callingClass);
+            return "Matcher not found";
+        }
     }
 
     protected Map<String, String> setRequestFormParameters(Map<String, String> variables) {
