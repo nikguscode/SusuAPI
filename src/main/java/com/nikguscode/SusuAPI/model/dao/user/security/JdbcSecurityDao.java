@@ -1,8 +1,8 @@
 package com.nikguscode.SusuAPI.model.dao.user.security;
 
 import com.nikguscode.SusuAPI.dto.StudentDto;
-import com.nikguscode.SusuAPI.enums.UserAccess;
-import com.nikguscode.SusuAPI.model.entities.StudentSecurity;
+import com.nikguscode.SusuAPI.enumirations.UserAccess;
+import com.nikguscode.SusuAPI.model.entities.user.StudentSecurity;
 
 import static com.nikguscode.SusuAPI.constants.StudentConstants.*;
 
@@ -39,21 +39,15 @@ public class JdbcSecurityDao implements SecurityDao {
     }
 
     @Override
-    public void updateUser(StudentSecurity studentSecurity) {
-        //String query = "UPDATE FROM " + USER_SECURITY_TABLE + " "
-    }
-
-    @Override
     public StudentSecurity getUser(StudentDto studentDto) {
         UUID id = getUserId(studentDto.getUsername());
         String query = "SELECT * FROM " + USER_SECURITY_TABLE + " WHERE id = (?)";
         return jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
-            UUID studentId = UUID.fromString(rs.getString("id"));
             String username = rs.getString("username");
             String hash = rs.getString("hash");
             UserAccess userAccess = UserAccess.valueOf(rs.getString("user_access"));
             String salt = rs.getString("salt");
-            return new StudentSecurity(studentId, username, hash, userAccess, salt);
+            return new StudentSecurity(id, username, hash, userAccess, salt);
         }, id);
     }
 

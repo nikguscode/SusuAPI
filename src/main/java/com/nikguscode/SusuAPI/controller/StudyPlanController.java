@@ -1,8 +1,8 @@
 package com.nikguscode.SusuAPI.controller;
 
 import com.nikguscode.SusuAPI.dto.StudentDto;
-import com.nikguscode.SusuAPI.model.service.AuthenticationService;
-import com.nikguscode.SusuAPI.model.service.parsers.ParserInterface;
+import com.nikguscode.SusuAPI.model.service.querymanager.requests.AuthenticationRequest;
+import com.nikguscode.SusuAPI.model.service.querymanager.Request;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,20 +12,20 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class StudyPlanController {
-    private final AuthenticationService authenticationService;
-    private final ParserInterface parserInterface;
+    private final AuthenticationRequest authenticationRequest;
+    private final Request request;
 
-    public StudyPlanController(AuthenticationService authenticationService,
-                                       @Qualifier("studyPlanParser") ParserInterface parserInterface) {
-        this.authenticationService = authenticationService;
-        this.parserInterface = parserInterface;
+    public StudyPlanController(AuthenticationRequest authenticationRequest,
+                               @Qualifier("studyPlanRequest") Request request) {
+        this.authenticationRequest = authenticationRequest;
+        this.request = request;
     }
 
     @PostMapping("/study-plan")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public String handle(@RequestBody StudentDto studentDto) {
-        String cookie = authenticationService.getCookies(studentDto);
-        return parserInterface.execute(cookie, "https://studlk.susu.ru/ru/StudyPlan/StudyPlanGridPartialCustom");
+        String cookie = authenticationRequest.getCookies(studentDto);
+        return request.send(cookie, "https://studlk.susu.ru/ru/StudyPlan/StudyPlanGridPartialCustom");
     }
 
 }

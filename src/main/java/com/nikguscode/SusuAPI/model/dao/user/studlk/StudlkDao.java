@@ -1,10 +1,14 @@
 package com.nikguscode.SusuAPI.model.dao.user.studlk;
 
+import com.nikguscode.SusuAPI.dto.StudentDto;
+import com.nikguscode.SusuAPI.model.entities.user.StudentInfo;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 public interface StudlkDao {
-    void addInfo(String info);
-    void deleteInfo();
-    String getInfo();
+    void add(StudentDto studentDto);
+    void delete(UUID id);
+    StudentInfo get(UUID id);
 }

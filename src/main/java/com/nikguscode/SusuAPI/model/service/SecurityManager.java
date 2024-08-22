@@ -2,7 +2,7 @@ package com.nikguscode.SusuAPI.model.service;
 
 import com.nikguscode.SusuAPI.dto.StudentDto;
 import com.nikguscode.SusuAPI.model.dao.user.security.SecurityDao;
-import com.nikguscode.SusuAPI.model.entities.StudentSecurity;
+import com.nikguscode.SusuAPI.model.entities.user.StudentSecurity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,7 @@ import java.security.spec.KeySpec;
 import java.util.Base64;
 import java.util.UUID;
 
-import static com.nikguscode.SusuAPI.enums.UserAccess.*;
+import static com.nikguscode.SusuAPI.enumirations.UserAccess.*;
 import static com.nikguscode.SusuAPI.constants.StudentConstants.*;
 
 @Service

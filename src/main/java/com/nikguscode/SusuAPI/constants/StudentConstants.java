@@ -11,4 +11,5 @@ public class StudentConstants {
     public static final String USER_ACCESS_DB = "user_access";
     public static final String SALT_DB = "salt";
     public static final String STUDENT_GROUP_BD = "student_group";
+    public static final String PARSED_AT_DB = "parsed_at";
 }

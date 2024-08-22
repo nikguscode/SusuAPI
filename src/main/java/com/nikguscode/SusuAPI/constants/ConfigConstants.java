@@ -11,7 +11,7 @@ public class ConfigConstants {
      * Variables which contains names of table
      */
     public static final String AUTH_TABLE = "config.auth";
-    public static final String VARIABLES_TABLE = "config.parser";
+    public static final String PARSER_TABLE = "config.parser";
     public static final String DISCIPLINE_TABLE = "config.discipline";
 
     /**
@@ -35,4 +35,5 @@ public class ConfigConstants {
     public static final String SUBJECT_NAME_DB = "subject_name";
     public static final String SUBJECT_ID_DB = "subject_id";
     public static final String STUDENT_GROUP_DB = "student_group";
+    public static final String HTML_PAGE_DB = "html_page";
 }
