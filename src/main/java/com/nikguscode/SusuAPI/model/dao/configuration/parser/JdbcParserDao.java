@@ -3,7 +3,7 @@ package com.nikguscode.SusuAPI.model.dao.configuration.parser;
 import com.nikguscode.SusuAPI.model.entities.configuration.Parser;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 @Service
 public class JdbcParserDao implements ParserDao{

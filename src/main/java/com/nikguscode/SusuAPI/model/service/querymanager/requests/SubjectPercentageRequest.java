@@ -7,7 +7,7 @@ import com.nikguscode.SusuAPI.model.service.querymanager.RequestManager;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.request.RequestBuilder;
 import org.springframework.stereotype.Service;
-import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 import java.io.IOException;
 import java.net.http.HttpClient;

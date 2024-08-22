@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

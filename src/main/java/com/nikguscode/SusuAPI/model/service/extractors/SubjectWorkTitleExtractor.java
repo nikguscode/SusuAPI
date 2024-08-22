@@ -14,7 +14,8 @@ public class SubjectWorkTitleExtractor {
 
     public String extract(String htmlPage, String regex) {
         Document currentPage = Jsoup.parse(htmlPage);
-        System.out.println(currentPage.body().text());
-        return extractorByMatcher.extract(currentPage.body().text(), regex, this.getClass().toString());
+        String extractedTitleWithSubjectCode = extractorByMatcher.extract(currentPage.body().text(), regex, this.getClass().toString());
+        String removeCodeRegex = "^\\S+\\s";
+        return extractedTitleWithSubjectCode.replaceAll(removeCodeRegex, "").trim();
     }
 }

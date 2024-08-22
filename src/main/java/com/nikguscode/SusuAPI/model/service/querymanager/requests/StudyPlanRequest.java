@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.model.service.querymanager.requests;
 
-import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 import com.nikguscode.SusuAPI.model.dao.configuration.parser.ParserDao;
 import com.nikguscode.SusuAPI.model.entities.configuration.Parser;
 import com.nikguscode.SusuAPI.model.service.querymanager.Request;

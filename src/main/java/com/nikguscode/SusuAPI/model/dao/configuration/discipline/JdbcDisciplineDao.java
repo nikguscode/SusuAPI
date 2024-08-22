@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.nikguscode.SusuAPI.constants.ConfigConstants.*;
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 @Service
 @Slf4j

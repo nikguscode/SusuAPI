@@ -6,7 +6,7 @@ package com.nikguscode.SusuAPI.constants;
  * @author nikguscode
  * @since 27/07/2024
  */
-public class ConfigConstants {
+public class ConfigurationConstants {
     /**
      * Variables which contains names of table
      */
