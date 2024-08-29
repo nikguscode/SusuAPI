@@ -1,18 +1,20 @@
 package com.nikguscode.SusuAPI.controller;
 
+import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 import com.nikguscode.SusuAPI.dto.StudentDto;
 import com.nikguscode.SusuAPI.model.dao.configuration.discipline.DisciplineDao;
+import com.nikguscode.SusuAPI.model.dao.configuration.parser.ParserDao;
+import com.nikguscode.SusuAPI.model.dao.configuration.regex.RegexDao;
 import com.nikguscode.SusuAPI.model.dao.user.security.SecurityDao;
 import com.nikguscode.SusuAPI.model.dao.user.studlk.StudlkDao;
 import com.nikguscode.SusuAPI.model.entities.configuration.Discipline;
+import com.nikguscode.SusuAPI.model.entities.configuration.Parser;
 import com.nikguscode.SusuAPI.model.entities.user.StudentInfo;
-import com.nikguscode.SusuAPI.model.service.extractors.ExtractorByMatcher;
-import com.nikguscode.SusuAPI.model.service.extractors.SubjectWorkProgramExtractor;
-import com.nikguscode.SusuAPI.model.service.extractors.SubjectWorkTitleExtractor;
+import com.nikguscode.SusuAPI.model.service.extractors.core.RequestExtractor;
+import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
+import com.nikguscode.SusuAPI.model.service.querymanager.Request;
 import com.nikguscode.SusuAPI.model.service.querymanager.requests.AuthenticationRequest;
 import com.nikguscode.SusuAPI.model.service.SecurityManager;
-import com.nikguscode.SusuAPI.model.service.querymanager.Request;
-import com.nikguscode.SusuAPI.model.service.querymanager.requests.SubjectWorkProgramRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,48 +28,50 @@ import java.util.UUID;
 public class SubjectWorkProgramController {
     private final AuthenticationRequest authenticationRequest;
     private final SecurityManager securityManager;
-    private final Map<String, Request> parsers;
-    private final SubjectWorkProgramRequest subjectWorkProgramParser;
+    private final Map<String, Request> requests;
+    private final Map<String, RequestExtractor> extractors;
+    private final ParserDao parserDao;
+    private final RegexDao regexDao;
     private final StudlkDao studlkDao;
     private final DisciplineDao disciplineDao;
     private final SecurityDao securityDao;
     private final ExtractorByMatcher extractorByMatcher;
-    private final SubjectWorkProgramExtractor subjectWorkProgramExtractor;
-    private final SubjectWorkTitleExtractor subjectWorkTitleExtractor;
 
     @Autowired
     public SubjectWorkProgramController(AuthenticationRequest authenticationRequest,
                                         SecurityManager securityManager,
-                                        Map<String, Request> parsers,
-                                        SubjectWorkProgramRequest subjectWorkProgramParser,
+                                        Map<String, Request> requests,
+                                        Map<String, RequestExtractor> extractors,
+                                        @Qualifier("jdbcParserDao") ParserDao parserDao,
+                                        @Qualifier("jdbcRegexDao") RegexDao regexDao,
                                         @Qualifier("jdbcStudlkDao") StudlkDao studlkDao,
                                         @Qualifier("jdbcSecurityDao") SecurityDao securityDao,
                                         @Qualifier("jdbcDisciplineDao") DisciplineDao disciplineDao,
-                                        SubjectWorkProgramExtractor subjectWorkProgramExtractor,
-                                        ExtractorByMatcher extractorByMatcher,
-                                        SubjectWorkTitleExtractor subjectWorkTitleExtractor) {
+                                        ExtractorByMatcher extractorByMatcher) {
         this.authenticationRequest = authenticationRequest;
         this.securityManager = securityManager;
-        this.parsers = parsers;
-        this.subjectWorkProgramParser = subjectWorkProgramParser;
+        this.requests = requests;
+        this.extractors = extractors;
+        this.parserDao = parserDao;
+        this.regexDao = regexDao;
         this.studlkDao = studlkDao;
         this.securityDao = securityDao;
         this.disciplineDao = disciplineDao;
-        this.subjectWorkProgramExtractor = subjectWorkProgramExtractor;
         this.extractorByMatcher = extractorByMatcher;
-        this.subjectWorkTitleExtractor = subjectWorkTitleExtractor;
     }
 
-    private void getStudlkInfo(StudentDto studentDto, String cookie) {
+    private void getStudlkInfo(StudentDto studentDto) {
         if (securityManager.apiAuthenticate(studentDto)) {
+            Parser parser = parserDao.get(MAIN_PAGE_ROW_DB);
             UUID userId = securityDao.getUserId(studentDto.getUsername());
             studentDto.setId(userId);
+
 
             try {
                 StudentInfo studentInfo = studlkDao.get(userId);
                 studentDto.setStudentGroup(studentInfo.getStudentGroup());
             } catch (EmptyResultDataAccessException e) {
-                String studentGroup = parsers.get("userInfoParser").send(cookie, "https://studlk.susu.ru/ru");
+                String studentGroup = requests.get("mainPageRequest").send(studentDto.getCookie(), parser.getUrl());
                 studentDto.setStudentGroup(studentGroup);
 
                 studlkDao.add(studentDto);
@@ -76,39 +80,48 @@ public class SubjectWorkProgramController {
     }
 
     @PostMapping("/rpd")
-    public ResponseEntity<String> handle(@RequestBody Map<String, String> json, StudentDto studentDto) {
-        studentDto.setUsername(json.get("username"));
-        studentDto.setPassword(json.get("password"));
-        String cookie = authenticationRequest.getCookies(studentDto);
+    public ResponseEntity<String> handle(@RequestBody Map<String, String> requestJson, StudentDto studentDto) {
+        studentDto.setUsername(requestJson.get("username"));
+        studentDto.setPassword(requestJson.get("password"));
+        studentDto.setCookie(authenticationRequest.getCookies(studentDto));
 
-        if (json.containsKey("subject-id")) {
-            String url = "https://studlk.susu.ru/ru/Reference/SubjectProgram/" + json.get("subject-id") + "?discType=RPD";
-            getStudlkInfo(studentDto, cookie);
+        Parser parser = parserDao.get(SUBJECT_WORK_PROGRAM_ROW_DB);
+        Map<String, String> regex = regexDao.get(parser.getRegexId());
+
+        if (requestJson.containsKey("subject-id")) {
+            String url = parser.getUrl() + requestJson.get("subject-id") + "?discType=RPD";
+            getStudlkInfo(studentDto);
 
             try {
-                Discipline discipline = disciplineDao.get(json.get("subject-id"));
-                return ResponseEntity.ok(subjectWorkProgramExtractor.extract(discipline.getHtmlPage()));
+                Discipline discipline = disciplineDao.get(requestJson.get("subject-id"));
+                return ResponseEntity.ok(extractors.get("subjectWorkProgramExtractor").extract(
+                        discipline.getHtmlPage(),
+                        regex,
+                        this.getClass().getName()
+                ));
             } catch (EmptyResultDataAccessException e) {
-                String htmlPage = parsers.get("subjectWorkProgramRequest").send(cookie, url);
+                String htmlPage = requests.get("subjectWorkProgramRequest").send(studentDto.getCookie(), url);
                 disciplineDao.add(new Discipline(
                         UUID.randomUUID(),
-                        subjectWorkTitleExtractor.extract(htmlPage, "(?<=РАБОЧАЯ ПРОГРАММА дисциплины\\s)(.*?)(?=\\sдля направления)"),
-                        json.get("subject-id"),
+                        extractors.get("subjectWorkTitleExtractor").extract(htmlPage, regex, this.getClass().getName()),
+                        requestJson.get("subject-id"),
                         studentDto.getStudentGroup(),
                         htmlPage
                 ));
 
-                return ResponseEntity.ok(subjectWorkProgramExtractor.extract(htmlPage));
+                return ResponseEntity.ok(extractors.get("subjectWorkProgramExtractor").extract(htmlPage, regex, this.getClass().getName()));
             }
-        } else if (json.containsKey("subject-url")) {
-            return ResponseEntity.ok(parsers.get("subjectWorkProgramParser").send(cookie, json.get("subject-url")));
-        } else if (json.containsKey("subject-name")) {
+        } else if (requestJson.containsKey("subject-url")) {
+            //return ResponseEntity.ok(parsers.get("subjectWorkProgramParser").send(cookie, requestJson.get("subject-url")));
+        } else if (requestJson.containsKey("subject-name")) {
             return null;
             //return parserInterface.execute(cookie, )
         } else {
             return ResponseEntity.badRequest().body("Parameter requests are incorrect, check out the documentation " +
                     "at the link: https://github.com/nikguscode/Susu_API");
         }
+
+        return null;
     }
 
 }
