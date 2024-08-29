@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.model.service.extractors;
+package com.nikguscode.SusuAPI.model.service.extractors.security;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
