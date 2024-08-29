@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.model.service.querymanager.requests;
 
-import com.nikguscode.SusuAPI.model.service.extractors.ExtractorByMatcher;
+import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
 import com.nikguscode.SusuAPI.model.service.querymanager.Request;
 import com.nikguscode.SusuAPI.model.service.querymanager.RequestManager;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
@@ -16,11 +16,11 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
 @Service
-public class UserInfoRequest extends RequestManager implements Request {
+public class MainPageRequest extends RequestManager implements Request {
     private final ExtractorByMatcher extractorByMatcher;
 
     @Autowired
-    public UserInfoRequest(Configurator configurator,
+    public MainPageRequest(Configurator configurator,
                            RequestBuilder requestBuilder,
                            ExtractorByMatcher extractorByMatcher) {
         super(configurator, requestBuilder);
