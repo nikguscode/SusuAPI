@@ -33,7 +33,7 @@ public class StudyPlanRequest extends RequestManager implements Request {
     @Override
     public String send(String cookie, String link) {
         try (HttpClient client = super.createClient().build()) {
-            Parser parser = parserDao.get(STUDY_PLAN_ROW);
+            Parser parser = parserDao.get(STUDY_PLAN_ROW_DB);
             Map<String, String> requestBodyParameters = new HashMap<>();
             requestBodyParameters.put(parser.getDxCallbackVariable(), parser.getDxCallbackValue());
 
@@ -42,7 +42,7 @@ public class StudyPlanRequest extends RequestManager implements Request {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info("Response code: {}", response.statusCode());
 
-            return super.extractJson(response, parser.getFindPattern());
+            return response.body();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }

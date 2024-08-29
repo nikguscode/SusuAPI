@@ -27,14 +27,14 @@ public class SubjectPercentageRequest extends RequestManager implements Request 
     @Override
     public String send(String cookie, String link) {
         try (HttpClient client = super.createClient().build()) {
-            Parser parser = parserDao.get(SUBJECT_PERCENTAGE_ROW);
+            Parser parser = parserDao.get(SUBJECT_PERCENTAGE_ROW_DB);
             HttpResponse<String> response = client.send(
                     super.createGetRequest(cookie, parser.getUrl()),
                     HttpResponse.BodyHandlers.ofString()
             );
 
             logger.info("Response code: {}", response.statusCode());
-            return super.extractJson(response, parser.getFindPattern());
+            return response.body();
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
