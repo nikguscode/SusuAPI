@@ -4,7 +4,7 @@ import com.nikguscode.SusuAPI.dto.StudentDto;
 import com.nikguscode.SusuAPI.exceptions.NullChecker;
 import com.nikguscode.SusuAPI.model.dao.configuration.authenticatioin.AuthenticationDao;
 import com.nikguscode.SusuAPI.model.entities.configuration.Authentication;
-import com.nikguscode.SusuAPI.model.service.extractors.CsrfTokenExtractor;
+import com.nikguscode.SusuAPI.model.service.extractors.security.CsrfTokenExtractor;
 import com.nikguscode.SusuAPI.model.service.querymanager.RequestManager;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.request.RequestBuilder;
