@@ -15,7 +15,7 @@ public class JdbcAuthenticationDao implements AuthenticationDao {
     }
 
     public Authentication get() {
-        String query = "SELECT * FROM " + AUTH_TABLE + " WHERE id = 1";
+        String query = "SELECT * FROM " + AUTH_TABLE_DB + " WHERE id = 1";
         return jdbcTemplate.queryForObject(query, (rs, rowNum) -> new Authentication(
                 rs.getLong("id"),
                 rs.getString(CSRF_DB),
