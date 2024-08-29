@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 public class Parser {
     String id;
     String url;
+    UUID regexId;
     String dxCallbackVariable;
     String dxCallbackValue;
-    String findPattern;
 }
