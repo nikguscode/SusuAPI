@@ -1,5 +1,6 @@
 package com.nikguscode.SusuAPI.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,5 +12,6 @@ public class StudentDto {
     private UUID id;
     private String username;
     private String password;
+    private String cookie;
     private String studentGroup;
 }
