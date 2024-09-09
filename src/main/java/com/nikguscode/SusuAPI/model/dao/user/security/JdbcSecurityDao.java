@@ -1,10 +1,9 @@
 package com.nikguscode.SusuAPI.model.dao.user.security;
 
-import com.nikguscode.SusuAPI.dto.StudentDto;
+import com.nikguscode.SusuAPI.dto.iternal.StudentDto;
 import com.nikguscode.SusuAPI.enumirations.UserAccess;
 import com.nikguscode.SusuAPI.model.entities.user.StudentSecurity;
 
-import static com.nikguscode.SusuAPI.constants.StudentConstants.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -24,8 +23,7 @@ public class JdbcSecurityDao implements SecurityDao {
 
     @Override
     public void addUser(StudentSecurity studentSecurity) {
-        String query = "INSERT INTO " + USER_SECURITY_TABLE + " (id, " + USERNAME_DB + ", " + HASH_DB + ", " +
-                USER_ACCESS_DB + ", " + SALT_DB + ") VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO \"user\".user_security (id, username, hash, user_access, salt) VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(
                 query,
                 UUID.randomUUID(), studentSecurity.getUsername(), studentSecurity.getHash(), studentSecurity.getUserAccess().toString(), studentSecurity.getSalt()
@@ -34,14 +32,14 @@ public class JdbcSecurityDao implements SecurityDao {
 
     @Override
     public void deleteUser(UUID id) {
-        String query = "DELETE FROM " + USER_SECURITY_TABLE + " WHERE id = (?)";
+        String query = "DELETE FROM \"user\".user_security WHERE id = (?)";
         jdbcTemplate.update(query, id);
     }
 
     @Override
     public StudentSecurity getUser(StudentDto studentDto) {
         UUID id = getUserId(studentDto.getUsername());
-        String query = "SELECT * FROM " + USER_SECURITY_TABLE + " WHERE id = (?)";
+        String query = "SELECT * FROM \"user\".user_security WHERE id = (?)";
         return jdbcTemplate.queryForObject(query, (rs, rowNum) -> {
             String username = rs.getString("username");
             String hash = rs.getString("hash");
@@ -53,7 +51,7 @@ public class JdbcSecurityDao implements SecurityDao {
 
     @Override
     public UUID getUserId(String username) {
-        String query = "SELECT id FROM " + USER_SECURITY_TABLE + " WHERE " + USERNAME_DB + " = (?)";
+        String query = "SELECT id FROM \"user\".user_security WHERE username = (?)";
         log.info(query);
 
         try {

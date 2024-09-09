@@ -9,7 +9,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Parser {
+public class Request {
     String id;
     String url;
     UUID regexId;

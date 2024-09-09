@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.model.service.extractors.security;
+package com.nikguscode.SusuAPI.model.service.extractors.authentication;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -12,7 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Service
-public class CsrfTokenExtractor {
+public class CsrfTokenExtractor implements TokenExtractor {
     private String getToken(HttpResponse<String> response) {
         Document doc = Jsoup.parse(response.body());
         Element tokenElement = doc.selectFirst("input[name=__RequestVerificationToken]");
@@ -35,8 +35,8 @@ public class CsrfTokenExtractor {
                 .uri(URI.create("https://studlk.susu.ru/Account/Login"))
                 .GET()
                 .build();
-
         HttpResponse<String> response;
+
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
@@ -52,7 +52,8 @@ public class CsrfTokenExtractor {
         }
     }
 
-    public String getCsrfToken(HttpClient client) {
+    @Override
+    public String extract(HttpClient client) {
        return getResponseBody(client);
     }
 }

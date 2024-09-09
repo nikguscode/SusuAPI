@@ -1,17 +1,16 @@
 package com.nikguscode.SusuAPI.model.dao.configuration.discipline;
 
 import com.nikguscode.SusuAPI.model.entities.configuration.Discipline;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 @Service
-@Slf4j
+@Log4j2
 public class JdbcDisciplineDao implements DisciplineDao {
     private final JdbcTemplate jdbcTemplate;
 
@@ -21,15 +20,15 @@ public class JdbcDisciplineDao implements DisciplineDao {
 
     @Override
     public void add(Discipline discipline) {
-        String query = "INSERT INTO " + DISCIPLINE_TABLE_DB + " (id, " + SUBJECT_NAME_DB + ", " + SUBJECT_ID_DB + ", "
-                + STUDENT_GROUP_DB + ", " + HTML_PAGE_DB + ") VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO config.discipline (id, subject_name, subject_id, student_group, html_page) " +
+                "VALUES (?, ?, ?, ?, ?)";
         jdbcTemplate.update(query, UUID.randomUUID(), discipline.getSubjectName(),
                 discipline.getSubjectId(), discipline.getStudentGroup(), discipline.getHtmlPage());
     }
 
     @Override
     public Discipline get(String subjectId) throws EmptyResultDataAccessException {
-        String query = "SELECT * FROM " + DISCIPLINE_TABLE_DB + " WHERE subject_id = (?)";
+        String query = "SELECT * FROM config.discipline WHERE subject_id = (?)";
         return jdbcTemplate.queryForObject(query, (rs, rowNum) -> new Discipline(
                 UUID.fromString(rs.getString("id")),
                 rs.getString("subject_name"),
@@ -41,8 +40,7 @@ public class JdbcDisciplineDao implements DisciplineDao {
 
     @Override
     public Discipline get(String subjectName, String studentGroup) throws EmptyResultDataAccessException {
-        String query = "SELECT (*) FROM " + DISCIPLINE_TABLE_DB + " WHERE " + SUBJECT_NAME_DB + " = (?) AND "
-                + STUDENT_GROUP_DB + " = (?)";
+        String query = "SELECT * FROM config.discipline WHERE subject_name = (?) AND student_group = (?)";
         return jdbcTemplate.queryForObject(query, Discipline.class, subjectName, studentGroup);
     }
 }

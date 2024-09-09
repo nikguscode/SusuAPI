@@ -1,9 +1,10 @@
 package com.nikguscode.SusuAPI.model.service.extractors.requests.subjectworkprogram;
 
-import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
+import static com.nikguscode.SusuAPI.constants.DatabaseConstants.*;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nikguscode.SusuAPI.dto.SubjectWorkProgram;
+import com.nikguscode.SusuAPI.dto.response.SubjectWorkProgramDto;
 import com.nikguscode.SusuAPI.model.service.extractors.core.RequestExtractor;
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
 import lombok.extern.log4j.Log4j2;
@@ -39,8 +40,8 @@ public class SubjectWorkProgramExtractor implements RequestExtractor {
         }
     }
 
-    private List<SubjectWorkProgram> parseTableRows(Map<String, String> regex, Elements tableRows) {
-        List<SubjectWorkProgram> programs = new ArrayList<>();
+    private List<SubjectWorkProgramDto> parseTableRows(Map<String, String> regex, Elements tableRows) {
+        List<SubjectWorkProgramDto> programs = new ArrayList<>();
         boolean isFirstRow = true;
 
         for (Element row : tableRows) {
@@ -54,10 +55,10 @@ public class SubjectWorkProgramExtractor implements RequestExtractor {
 
             for (Element cell : rowCells) {
                 currentValues.add(cell.text()
-                        .replaceAll(regex.get(HYPHEN_WITH_SPACE_BETWEEN_LETTERS_PATTERN_DB), ""));
+                        .replaceAll(regex.get(HYPHEN_WITH_SPACE_BETWEEN_LETTERS_REGEX), ""));
             }
 
-            var subjectWorkProgram = new SubjectWorkProgram(
+            var subjectWorkProgram = new SubjectWorkProgramDto(
                     Optional.ofNullable(!currentValues.isEmpty() ? currentValues.get(0) : null).orElse(""),
                     parseNumberOrDefault(Optional.ofNullable(currentValues.size() > 1 ? currentValues.get(1) : null)
                             .orElse("0"), 0).intValue(),
@@ -79,15 +80,15 @@ public class SubjectWorkProgramExtractor implements RequestExtractor {
 
     @Override
     public String extract(String page, Map<String, String> regex, String callingClass) {
-        Document currentBody = Jsoup.parse(extractorByMatcher.extract(page, regex.get(SUBJECT_WORK_PROGRAM_PATTERN_DB),
+        Document currentBody = Jsoup.parse(extractorByMatcher.extract(page, regex.get(SUBJECT_WORK_PROGRAM_REGEX),
                 this.getClass().getName()));
         Elements tableRows = currentBody.select("tr");
 
-        List<SubjectWorkProgram> programs = parseTableRows(regex, tableRows);
+        List<SubjectWorkProgramDto> programs = parseTableRows(regex, tableRows);
         List<String> jsonList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
 
-        for (SubjectWorkProgram program : programs) {
+        for (SubjectWorkProgramDto program : programs) {
             try {
                 jsonList.add(objectMapper.writeValueAsString(program));
             } catch (JsonProcessingException e) {

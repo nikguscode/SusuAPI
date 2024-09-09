@@ -1,8 +1,8 @@
 package com.nikguscode.SusuAPI.model.service.querymanager.requests;
 
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
-import com.nikguscode.SusuAPI.model.service.querymanager.Request;
-import com.nikguscode.SusuAPI.model.service.querymanager.RequestManager;
+import com.nikguscode.SusuAPI.model.service.querymanager.RequestSender;
+import com.nikguscode.SusuAPI.model.service.querymanager.BaseRequest;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.request.RequestBuilder;
 import org.jsoup.Jsoup;
@@ -16,13 +16,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
 @Service
-public class MainPageRequest extends RequestManager implements Request {
+public class MainPageBaseRequest extends BaseRequest implements RequestSender {
     private final ExtractorByMatcher extractorByMatcher;
 
     @Autowired
-    public MainPageRequest(Configurator configurator,
-                           RequestBuilder requestBuilder,
-                           ExtractorByMatcher extractorByMatcher) {
+    public MainPageBaseRequest(Configurator configurator,
+                               RequestBuilder requestBuilder,
+                               ExtractorByMatcher extractorByMatcher) {
         super(configurator, requestBuilder);
         this.extractorByMatcher = extractorByMatcher;
     }

@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.dto;
+package com.nikguscode.SusuAPI.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -8,9 +8,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class SubjectWorkProgram {
-    @JsonProperty("subject-site-id")
-    private String subjectSiteId;
+public class SubjectWorkProgramDto {
+    @JsonProperty("subject-criteria-id")
+    private String subjectCriteriaId;
 
     @JsonProperty("semester")
     private int semester;

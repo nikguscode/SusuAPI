@@ -1,6 +1,8 @@
 package com.nikguscode.SusuAPI.model.service;
 
-import com.nikguscode.SusuAPI.dto.StudentDto;
+import static com.nikguscode.SusuAPI.constants.OtherConstants.*;
+
+import com.nikguscode.SusuAPI.dto.iternal.StudentDto;
 import com.nikguscode.SusuAPI.model.dao.user.security.SecurityDao;
 import com.nikguscode.SusuAPI.model.entities.user.StudentSecurity;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,6 @@ import java.util.Base64;
 import java.util.UUID;
 
 import static com.nikguscode.SusuAPI.enumirations.UserAccess.*;
-import static com.nikguscode.SusuAPI.constants.StudentConstants.*;
 
 @Service
 @Slf4j
@@ -39,7 +40,7 @@ public class SecurityManager {
         KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
 
         try {
-            SecretKeyFactory factory = SecretKeyFactory.getInstance(CODING_ALGORITHM);
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(AUTHENTICATION_CODING_ALGORITHM);
             byte[] hash = factory.generateSecret(spec).getEncoded();
 
             return Base64.getEncoder().encodeToString(hash);

@@ -1,4 +1,4 @@
-package com.nikguscode.SusuAPI.dto;
+package com.nikguscode.SusuAPI.dto.iternal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.model.service.extractors.requests.subjectworkprogram;
 
-import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
+import static com.nikguscode.SusuAPI.constants.DatabaseConstants.*;
 
 import com.nikguscode.SusuAPI.model.service.extractors.core.RequestExtractor;
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
@@ -25,10 +25,10 @@ public class SubjectWorkTitleExtractor implements RequestExtractor {
         Document currentPage = Jsoup.parse(htmlPage);
         String extractedTitleWithSubjectCode = extractorByMatcher.extract(
                 currentPage.body().text(),
-                regex.get(SUBJECT_NAME_WITH_CODE_PATTERN_DB),
+                regex.get(SUBJECT_NAME_WITH_DISCIPLINE_CODE_REGEX),
                 this.getClass().toString()
         );
-        String removeCodeRegex = regex.get(CODE_REMOVER_PATTERN_DB);
+        String removeCodeRegex = regex.get(CODE_REMOVE_REGEX);
 
         log.info("Service response: 200. Title extracted");
 

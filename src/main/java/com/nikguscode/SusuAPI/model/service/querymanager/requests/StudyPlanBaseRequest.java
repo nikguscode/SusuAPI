@@ -1,12 +1,14 @@
 package com.nikguscode.SusuAPI.model.service.querymanager.requests;
 
-import com.nikguscode.SusuAPI.model.dao.configuration.parser.ParserDao;
-import com.nikguscode.SusuAPI.model.entities.configuration.Parser;
-import com.nikguscode.SusuAPI.model.service.querymanager.Request;
-import com.nikguscode.SusuAPI.model.service.querymanager.RequestManager;
+import static com.nikguscode.SusuAPI.constants.DatabaseConstants.*;
+import com.nikguscode.SusuAPI.model.dao.configuration.request.RequestDao;
+import com.nikguscode.SusuAPI.model.entities.configuration.Request;
+import com.nikguscode.SusuAPI.model.service.querymanager.RequestSender;
+import com.nikguscode.SusuAPI.model.service.querymanager.BaseRequest;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.request.RequestBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -16,24 +18,22 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
 
 @Service
-public class SubjectGradeRequest extends RequestManager implements Request {
-    private final ParserDao parserDao;
-
+public class StudyPlanBaseRequest extends BaseRequest implements RequestSender {
+    private final RequestDao requestDao;
     @Autowired
-    public SubjectGradeRequest(Configurator configurator,
-                               RequestBuilder requestBuilder,
-                               ParserDao parserDao) {
+    public StudyPlanBaseRequest(Configurator configurator,
+                                RequestBuilder requestBuilder,
+                                @Qualifier("jdbcRequestDao") RequestDao requestDao) {
         super(configurator, requestBuilder);
-        this.parserDao = parserDao;
+        this.requestDao = requestDao;
     }
 
     @Override
     public String send(String cookie, String link) {
         try (HttpClient client = super.createClient().build()) {
-            Parser parser = parserDao.get(SUBJECT_GRADE_ROW_DB);
+            Request parser = requestDao.get(STUDY_PLAN_REQUEST_ID);
             Map<String, String> requestBodyParameters = new HashMap<>();
             requestBodyParameters.put(parser.getDxCallbackVariable(), parser.getDxCallbackValue());
 

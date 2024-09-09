@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
  * An interface that provides methods for executing http requests.
  */
 @Service
-public interface Request {
+public interface RequestSender {
 
     /**
      * A method designed to send a http request.

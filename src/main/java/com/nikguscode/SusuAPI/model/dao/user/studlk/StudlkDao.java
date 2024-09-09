@@ -1,6 +1,6 @@
 package com.nikguscode.SusuAPI.model.dao.user.studlk;
 
-import com.nikguscode.SusuAPI.dto.StudentDto;
+import com.nikguscode.SusuAPI.dto.iternal.StudentDto;
 import com.nikguscode.SusuAPI.model.entities.user.StudentInfo;
 import org.springframework.stereotype.Service;
 

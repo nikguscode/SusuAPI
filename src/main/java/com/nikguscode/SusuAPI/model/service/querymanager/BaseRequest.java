@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.nikguscode.SusuAPI.constants.ConfigurationConstants.*;
+import static com.nikguscode.SusuAPI.constants.DatabaseConstants.*;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -18,14 +18,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class RequestManager {
+public class BaseRequest {
     private final Configurator configurator;
     private final RequestBuilder requestBuilder;
     protected final Logger logger;
 
     @Autowired
-    public RequestManager(Configurator configurator,
-                          RequestBuilder requestBuilder) {
+    public BaseRequest(Configurator configurator,
+                       RequestBuilder requestBuilder) {
         this.configurator = configurator;
         this.requestBuilder = requestBuilder;
         this.logger = LoggerFactory.getLogger(getClass());
@@ -53,7 +53,7 @@ public class RequestManager {
 
     protected Map<String, String> setRequestFormParameters(Map<String, String> variables) {
         Map<String, String> parameters = new HashMap<>();
-        parameters.put(variables.get(DX_CALLBACK_DB), variables.get(DX_CALLBACK_VALUE_DB));
+        parameters.put(variables.get(DX_CALLBACK_VALUE_VARIABLE_NAME), variables.get(DX_CALLBACK_VARIABLE_NAME));
 
         return parameters;
     }
