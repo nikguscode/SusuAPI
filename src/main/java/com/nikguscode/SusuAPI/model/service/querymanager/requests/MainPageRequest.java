@@ -16,13 +16,13 @@ import java.net.http.HttpClient;
 import java.net.http.HttpResponse;
 
 @Service
-public class MainPageBaseRequest extends BaseRequest implements RequestSender {
+public class MainPageRequest extends BaseRequest implements RequestSender {
     private final ExtractorByMatcher extractorByMatcher;
 
     @Autowired
-    public MainPageBaseRequest(Configurator configurator,
-                               RequestBuilder requestBuilder,
-                               ExtractorByMatcher extractorByMatcher) {
+    public MainPageRequest(Configurator configurator,
+                           RequestBuilder requestBuilder,
+                           ExtractorByMatcher extractorByMatcher) {
         super(configurator, requestBuilder);
         this.extractorByMatcher = extractorByMatcher;
     }

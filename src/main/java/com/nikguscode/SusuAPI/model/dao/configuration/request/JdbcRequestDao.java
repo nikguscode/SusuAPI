@@ -19,10 +19,8 @@ public class JdbcRequestDao implements RequestDao {
         String query = "SELECT * FROM config.request WHERE id = (?)";
         return jdbcTemplate.queryForObject(query, (rs, rowNum) -> new Request(
                 id,
-                rs.getString("url_var"),
-                UUID.fromString(rs.getString("regex_id")),
-                rs.getString("dx_callback_var"),
-                rs.getString("dx_callback_val")
+                UUID.fromString(rs.getString("entity_id")),
+                rs.getString("url")
         ), id);
     }
 }

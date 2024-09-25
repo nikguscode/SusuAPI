@@ -14,7 +14,7 @@ import com.nikguscode.SusuAPI.model.entities.user.StudentInfo;
 import com.nikguscode.SusuAPI.model.service.extractors.core.RequestExtractor;
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
 import com.nikguscode.SusuAPI.model.service.querymanager.RequestSender;
-import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationBaseRequest;
+import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationRequest;
 import com.nikguscode.SusuAPI.model.service.SecurityManager;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.UUID;
 @RestController
 @Log4j2
 public class SubjectWorkProgramController {
-    private final StudlkAuthenticationBaseRequest studlkAuthenticationRequest;
+    private final StudlkAuthenticationRequest studlkAuthenticationRequest;
     private final SecurityManager securityManager;
     private final Map<String, RequestSender> requests;
     private final Map<String, RequestExtractor> extractors;
@@ -41,7 +41,7 @@ public class SubjectWorkProgramController {
     private final ExtractorByMatcher extractorByMatcher;
 
     @Autowired
-    public SubjectWorkProgramController(StudlkAuthenticationBaseRequest studlkAuthenticationRequest,
+    public SubjectWorkProgramController(StudlkAuthenticationRequest studlkAuthenticationRequest,
                                         SecurityManager securityManager,
                                         Map<String, RequestSender> requests,
                                         Map<String, RequestExtractor> extractors,
@@ -103,7 +103,7 @@ public class SubjectWorkProgramController {
         studentDto.setCookie(studlkAuthenticationRequest.send(studentDto));
 
         Request requestConfiguration = requestDao.get(SUBJECT_WORK_PROGRAM_REQUEST_ID);
-        Map<String, String> regex = regexDao.get(requestConfiguration.getRegexId());
+        Map<String, String> regex = regexDao.get(requestConfiguration.getEntityId());
 
         if (requestJson.containsKey("subject-id")) {
             String url = requestConfiguration.getUrl() + requestJson.get("subject-id") + "?discType=RPD";

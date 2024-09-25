@@ -8,7 +8,7 @@ import com.nikguscode.SusuAPI.model.dao.configuration.request.RequestDao;
 import com.nikguscode.SusuAPI.model.dao.configuration.regex.RegexDao;
 import com.nikguscode.SusuAPI.model.entities.configuration.Request;
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
-import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationBaseRequest;
+import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationRequest;
 import com.nikguscode.SusuAPI.model.service.querymanager.RequestSender;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,13 +21,13 @@ import java.util.Map;
 @RestController
 @Log4j2
 public class SubjectGradeController {
-    private final StudlkAuthenticationBaseRequest studlkAuthenticationRequest;
+    private final StudlkAuthenticationRequest studlkAuthenticationRequest;
     private final RequestSender requestSender;
     private final RequestDao requestDao;
     private final RegexDao regexDao;
     private final ExtractorByMatcher extractorByMatcher;
 
-    public SubjectGradeController(StudlkAuthenticationBaseRequest studlkAuthenticationRequest,
+    public SubjectGradeController(StudlkAuthenticationRequest studlkAuthenticationRequest,
                                   @Qualifier(SUBJECT_GRADE_REQUEST_INSTANCE) RequestSender requestSender,
                                   RequestDao requestDao,
                                   RegexDao regexDao,
@@ -43,7 +43,7 @@ public class SubjectGradeController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ResponseEntity<String> handle(@RequestBody StudentDto studentDto) {
         Request requestConfiguration = requestDao.get(SUBJECT_GRADE_REQUEST_ID);
-        Map<String, String> regex = regexDao.get(requestConfiguration.getRegexId());
+        Map<String, String> regex = regexDao.get(requestConfiguration.getEntityId());
         String htmlPage = requestSender.send(studlkAuthenticationRequest.send(studentDto), requestConfiguration.getUrl());
         String extractedData = extractorByMatcher.extract(
                 htmlPage,

@@ -1,59 +1,38 @@
 package com.nikguscode.SusuAPI.model.service.extractors.authentication;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
+import static com.nikguscode.SusuAPI.constants.DatabaseConstants.*;
+
+import com.nikguscode.SusuAPI.model.dao.configuration.regex.RegexDao;
+import com.nikguscode.SusuAPI.model.dao.configuration.request.RequestDao;
+import com.nikguscode.SusuAPI.model.entities.configuration.Request;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Map;
 
 @Service
-public class CsrfTokenExtractor implements TokenExtractor {
-    private String getToken(HttpResponse<String> response) {
-        Document doc = Jsoup.parse(response.body());
-        Element tokenElement = doc.selectFirst("input[name=__RequestVerificationToken]");
+public class CsrfTokenExtractor extends BaseTokenExtractor implements TokenExtractor {
+    private final RequestDao requestDao;
+    private final RegexDao regexDao;
 
-        if (tokenElement == null) {
-            throw new IllegalArgumentException("CSRF token not found in the response");
-        }
-
-        String token = tokenElement.val();
-
-        if (!token.matches("^[a-zA-Z0-9-_.]+$")) {
-            throw new IllegalArgumentException("Invalid CSRF token format");
-        }
-
-        return token;
-    }
-
-    private String getResponseBody(HttpClient client) {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://studlk.susu.ru/Account/Login"))
-                .GET()
-                .build();
-        HttpResponse<String> response;
-
-        try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        int statusCode = response.statusCode();
-
-        if (statusCode == 200 || statusCode == 302 || statusCode == 303) {
-            return getToken(response);
-        } else {
-            throw new RuntimeException("CSRF token extract exception, status code: " + statusCode);
-        }
+    public CsrfTokenExtractor(RequestDao requestDao,
+                              RegexDao regexDao) {
+        this.requestDao = requestDao;
+        this.regexDao = regexDao;
     }
 
     @Override
     public String extract(HttpClient client) {
-       return getResponseBody(client);
+        Request request = requestDao.get(CSRF_TOKEN_EXTRACTOR_ID);
+        Map<String, String> regex = regexDao.get(request.getEntityId());
+        HttpResponse<String> response = super.getResponseBody(client, request.getUrl());
+
+        if (response.statusCode() == 200 || response.statusCode() == 302 || response.statusCode() == 303) {
+            return super.getToken(response, regex);
+        } else {
+            throw new RuntimeException("CSRF token extract exception, status code: " + response.statusCode());
+        }
     }
 }

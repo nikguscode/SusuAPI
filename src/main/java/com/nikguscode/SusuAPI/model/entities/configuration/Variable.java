@@ -1,6 +1,5 @@
 package com.nikguscode.SusuAPI.model.entities.configuration;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,9 +7,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-public class Request {
-    String id;
+public class Variable {
+    UUID id;
+    String variableKey;
+    String variableValue;
     UUID entityId;
-    String url;
 }

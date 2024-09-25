@@ -19,6 +19,14 @@ public class DatabaseConstants {
     public static final String DX_CALLBACK_VALUE_VARIABLE_NAME = "dx_callback_val";
 
     /**
+     * Extractor database
+     */
+
+    // id
+    public static final String CSRF_TOKEN_EXTRACTOR_ID = "csrf_token_studlk";
+    public static final String MACHINE_KEY_EXTRACTOR_ID = "machine_key_id";
+
+    /**
      * Regex database
      */
 
@@ -31,5 +39,6 @@ public class DatabaseConstants {
     public static final String CODE_REMOVE_REGEX = "code_remove";
     public static final String HYPHEN_WITH_SPACE_BETWEEN_LETTERS_REGEX = "hyphen_with_space_between_letters";
     public static final String SUBJECT_ID_FROM_URL_REGEX = "subject_id_from_url";
-//    public static final String SUBJECT_WORK_PROGRAM_REGEX = "subject_work_program";
+    public static final String TOKEN_REGEX = "token";
+    public static final String TOKEN_VALIDITY_REGEX = "token_validity";
 }

@@ -8,20 +8,20 @@
  * </p>
  *
  * <p>
- * The abstract class {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.AuthenticationBaseRequest
+ * The abstract class {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.AuthenticationRequest
  * AuthenticationRequest} centralizes common code for various authentication mechanisms. It prevents code duplication across
  * different authentication implementations. This class also defines an abstract method
- * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.AuthenticationBaseRequest#setParameters(com.nikguscode.SusuAPI.dto.iternal.StudentDto, com.nikguscode.SusuAPI.model.entities.configuration.Authentication, java.net.http.HttpClient)
+ * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.AuthenticationRequest#setParameters(com.nikguscode.SusuAPI.dto.iternal.StudentDto, com.nikguscode.SusuAPI.model.entities.configuration.Authentication, java.net.http.HttpClient)
  * setParameters()}, which allows each authentication class to set its own specific request parameters.
  * </p>
  *
  * <p>
- * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationBaseRequest
+ * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationRequest
  * StudlkAuthenticationRequest} implements authentication for the studlk.susu.ru platform.
  * </p>
  *
  * <p>
- * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.OnlineAuthenticationBaseRequest
+ * {@link com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.OnlineAuthenticationRequest
  * OnlineAuthenticationRequest} provides authentication for the online.susu.ru platform.
  * </p>
  *

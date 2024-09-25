@@ -1,8 +1,9 @@
 package com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication;
 
 import com.nikguscode.SusuAPI.dto.iternal.StudentDto;
-import com.nikguscode.SusuAPI.model.dao.configuration.authenticatioin.AuthenticationDao;
-import com.nikguscode.SusuAPI.model.entities.configuration.Authentication;
+import com.nikguscode.SusuAPI.model.dao.configuration.request.RequestDao;
+import com.nikguscode.SusuAPI.model.dao.configuration.variable.VariableDao;
+import com.nikguscode.SusuAPI.model.entities.configuration.Request;
 import com.nikguscode.SusuAPI.model.service.querymanager.BaseRequest;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.client.Configurator;
 import com.nikguscode.SusuAPI.model.service.querymanager.configuration.request.RequestBuilder;
@@ -19,15 +20,18 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public abstract class AuthenticationBaseRequest extends BaseRequest {
-    private final AuthenticationDao authenticationDao;
+public abstract class AuthenticationRequest extends BaseRequest {
+    private final RequestDao requestDao;
+    private final VariableDao variableDao;
     private CookieManager userCookie;
 
-    public AuthenticationBaseRequest(Configurator configurator,
-                                     RequestBuilder requestBuilder,
-                                     @Qualifier("jdbcAuthenticationDao") AuthenticationDao authenticationDao) {
+    public AuthenticationRequest(Configurator configurator,
+                                 RequestBuilder requestBuilder,
+                                 @Qualifier("jdbcRequestDao") RequestDao requestDao,
+                                 @Qualifier("jdbcVariableDao") VariableDao variableDao) {
         super(configurator, requestBuilder);
-        this.authenticationDao = authenticationDao;
+        this.requestDao = requestDao;
+        this.variableDao = variableDao;
     }
 
     protected HttpClient.Builder createClient() {
@@ -35,11 +39,12 @@ public abstract class AuthenticationBaseRequest extends BaseRequest {
         return client.cookieHandler(userCookie = new CookieManager());
     }
 
-    protected List<HttpCookie> authorize(StudentDto studentDto) {
+    protected List<HttpCookie> authorize(StudentDto studentDto, String authenticationId) {
         try (HttpClient client = createClient().build()) {
-            Authentication authenticationConfiguration = authenticationDao.get();
-            String body = super.createBody(setParameters(studentDto, authenticationConfiguration, client));
-            HttpRequest request = super.createPostRequest(body, authenticationConfiguration.getUrlVariable());
+            Request requestConfiguration = requestDao.get(authenticationId);
+            Map<String, String> variablesConfiguration = variableDao.get(requestConfiguration.getEntityId());
+            String body = super.createBody(setParameters(studentDto, variablesConfiguration, client));
+            HttpRequest request = super.createPostRequest(body, requestConfiguration.getUrl());
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             logger.info("Response code: {}", response.statusCode());
@@ -52,12 +57,12 @@ public abstract class AuthenticationBaseRequest extends BaseRequest {
 
     protected abstract Map<String, String> setParameters(
             StudentDto studentDto,
-            Authentication authentication,
+            Map<String, String> variables,
             HttpClient client
     );
 
-    public String getCookies(StudentDto studentDto) {
-        List<HttpCookie> cookies = authorize(studentDto);
+    public String getCookies(StudentDto studentDto, String authenticationId) {
+        List<HttpCookie> cookies = authorize(studentDto, authenticationId);
         StringBuilder cookieString = new StringBuilder();
 
         for (HttpCookie cookie : cookies) {

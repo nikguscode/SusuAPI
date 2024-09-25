@@ -8,7 +8,8 @@ import java.util.UUID;
 @Getter
 @Setter
 public class Regex {
-    UUID parserId;
+    UUID id;
     String pattern;
     String patternId;
+    UUID entityId;
 }

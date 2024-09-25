@@ -17,7 +17,7 @@ public class JdbcRegexDao implements RegexDao {
 
     @Override
     public Map<String, String> get(UUID id) {
-        String query = "SELECT * FROM config.regex WHERE parser_id = (?)";
+        String query = "SELECT * FROM config.regex WHERE entity_id = (?)";
         return jdbcTemplate.query(query, rs -> {
             Map<String, String> map = new HashMap<>();
 

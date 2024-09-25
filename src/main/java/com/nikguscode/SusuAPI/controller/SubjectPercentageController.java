@@ -13,7 +13,7 @@ import com.nikguscode.SusuAPI.model.dao.configuration.regex.RegexDao;
 import com.nikguscode.SusuAPI.model.entities.configuration.Request;
 import com.nikguscode.SusuAPI.model.service.extractors.core.ExtractorByMatcher;
 import com.nikguscode.SusuAPI.model.service.extractors.requests.subjectpercentage.TotalPercentageExtractor;
-import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationBaseRequest;
+import com.nikguscode.SusuAPI.model.service.querymanager.requests.authentication.StudlkAuthenticationRequest;
 import com.nikguscode.SusuAPI.model.service.querymanager.RequestSender;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,13 +26,13 @@ import java.util.Map;
 @RestController
 @Log4j2
 public class SubjectPercentageController {
-    private final StudlkAuthenticationBaseRequest studlkAuthenticationRequest;
+    private final StudlkAuthenticationRequest studlkAuthenticationRequest;
     private final RequestSender requestSender;
     private final RequestDao requestDao;
     private final RegexDao regexDao;
     private final ExtractorByMatcher extractorByMatcher;
     private final TotalPercentageExtractor totalPercentageExtractor;
-    public SubjectPercentageController(StudlkAuthenticationBaseRequest studlkAuthenticationRequest,
+    public SubjectPercentageController(StudlkAuthenticationRequest studlkAuthenticationRequest,
                                        @Qualifier(PERCENTAGE_REQUEST_INSTANCE) RequestSender requestSender,
                                        RequestDao requestDao,
                                        RegexDao regexDao,
@@ -55,7 +55,7 @@ public class SubjectPercentageController {
 
         if (requestJson.get("mode").equals(TOTAL.getValue())) {
             Request requestConfiguration = requestDao.get(PERCENTAGE_REQUEST_ID);
-            Map<String, String> regex = regexDao.get(requestConfiguration.getRegexId());
+            Map<String, String> regex = regexDao.get(requestConfiguration.getEntityId());
             String htmlPage = requestSender.send(studentDto.getCookie(), requestConfiguration.getUrl());
             Map<String, Double> extractedData = totalPercentageExtractor.extract(
                     htmlPage,
@@ -76,7 +76,7 @@ public class SubjectPercentageController {
             }
         } else if (requestJson.get("mode").equals(BY_SUBJECT.getValue())) {
             Request requestConfiguration = requestDao.get(PERCENTAGE_REQUEST_ID);
-            Map<String, String> regex = regexDao.get(requestConfiguration.getRegexId());
+            Map<String, String> regex = regexDao.get(requestConfiguration.getEntityId());
             String htmlPage = requestSender.send(studentDto.getCookie(), requestConfiguration.getUrl());
             String extractedData = extractorByMatcher.extract(
                     htmlPage,
